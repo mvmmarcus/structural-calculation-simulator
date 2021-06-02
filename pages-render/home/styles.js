@@ -10,6 +10,8 @@ export const Container = styled.div`
     padding: 32px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   form {
