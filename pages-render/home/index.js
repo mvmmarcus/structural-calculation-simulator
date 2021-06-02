@@ -15,6 +15,7 @@ import {
   calcReacaoB,
   calcReacaoD,
 } from "../../helpers";
+import { useWindowSize } from "../../hooks";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useFormik } from "formik";
@@ -244,8 +245,10 @@ export default function Home() {
     4: "Deformações",
   };
 
+  const size = useWindowSize();
+
   return (
-    <Container>
+    <Container size={size}>
       <ToastContainer />
       <Grid container spacing={10}>
         <Head>
@@ -257,19 +260,42 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <Grid id="content" item xs={6}>
-          <Title currentStep={step} totalSteps={4} message={stepTitles[step]} />
-          <FlexContainer>
-            <Image
-              src="/images/structure_base.png"
-              alt="Estrutura Base"
-              width={500}
-              height={300}
+        {size > 1240 && (
+          <Grid id="content" item xs={6}>
+            <Title
+              currentStep={step}
+              totalSteps={4}
+              message={stepTitles[step]}
             />
-          </FlexContainer>
-        </Grid>
+            <FlexContainer>
+              <Image
+                src="/images/structure_base.png"
+                alt="Estrutura Base"
+                width={500}
+                height={300}
+              />
+            </FlexContainer>
+          </Grid>
+        )}
 
-        <Grid id="content" item xs={6}>
+        <Grid id="content" item xs={size > 1240 ? 6 : 12}>
+          {size <= 1240 && (
+            <Grid id="mobile-content" item xs={12}>
+              <Title
+                currentStep={step}
+                totalSteps={4}
+                message={stepTitles[step]}
+              />
+              <FlexContainer>
+                <Image
+                  src="/images/structure_base.png"
+                  alt="Estrutura Base"
+                  width={500}
+                  height={300}
+                />
+              </FlexContainer>
+            </Grid>
+          )}
           <form>
             <Grid className="input_group" container spacing={5}>
               {step === 1 && (
@@ -303,9 +329,10 @@ export default function Home() {
               )}
             </Grid>
             <Grid className="button_group" container>
-              <Grid item xs={6}>
+              <Grid item xs={size < 420 ? 12 : 6}>
                 {step > 1 && (
                   <Button
+                    fullWidth={size < 420 ? true : false}
                     onClick={() => setStep((prev) => prev - 1)}
                     variant="outlined"
                     type="button"
@@ -314,9 +341,10 @@ export default function Home() {
                   </Button>
                 )}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={size < 420 ? 12 : 6}>
                 {step < 4 ? (
                   <Button
+                    fullWidth={size < 420 ? true : false}
                     disabled={disableButton}
                     onClick={formik.handleSubmit}
                     variant="outlined"
@@ -325,7 +353,12 @@ export default function Home() {
                     Próximo
                   </Button>
                 ) : (
-                  <Button onClick={() => null} variant="outlined" type="button">
+                  <Button
+                    fullWidth={size < 420 ? true : false}
+                    onClick={() => null}
+                    variant="outlined"
+                    type="button"
+                  >
                     <DownloadDocument data={data} />
                   </Button>
                 )}

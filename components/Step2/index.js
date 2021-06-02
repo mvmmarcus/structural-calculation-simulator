@@ -13,6 +13,10 @@ export default function Step2({
   reactionD,
 }) {
   useEffect(() => {
+    if (window) window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (limEscBC < calcLimitEscBC) {
       toast(
         "O arame BC atingiu o limite de escoamento do material. Volte uma etapa e redimensione o projeto!",

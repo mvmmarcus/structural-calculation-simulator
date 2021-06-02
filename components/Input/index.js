@@ -1,6 +1,7 @@
 import React from "react";
 import { InputAdornment, TextField } from "@material-ui/core";
 import { Container } from "./styles";
+import { useWindowSize } from "../../hooks";
 import NumberFormat from "react-number-format";
 
 function NumberFormatCustom(props) {
@@ -42,8 +43,10 @@ export default function Input(props) {
     scale = 2,
   } = props;
 
+  const size = useWindowSize();
+
   return (
-    <Container>
+    <Container size={size}>
       <TextField
         disabled={disabled}
         fullWidth

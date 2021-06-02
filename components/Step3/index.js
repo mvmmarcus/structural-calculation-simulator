@@ -1,4 +1,5 @@
 import { Grid } from "@material-ui/core";
+import { useEffect } from "react";
 import { Input } from "../../components";
 
 export default function Step3({
@@ -7,6 +8,10 @@ export default function Step3({
   deslocPointE,
   deslocPointF,
 }) {
+  useEffect(() => {
+    if (window) window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <Grid style={{ textAlign: "center" }} item xs={12}>

@@ -1,7 +1,12 @@
 import { Grid } from "@material-ui/core";
+import { useEffect } from "react";
 import { Input } from "../../components";
 
 export default function Step4({ deformBC, deformDE }) {
+  useEffect(() => {
+    if (window) window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <Grid style={{ textAlign: "center" }} item xs={12}>
