@@ -87,7 +87,6 @@ export default function Home() {
       );
 
       setReactionD(reacao_d);
-      console.log({ reacao_d });
 
       const reacao_b = calcReacaoB(
         reacao_d,
@@ -101,7 +100,6 @@ export default function Home() {
         dist_ce
       );
 
-      console.log({ reacao_b });
       setReactionB(reacao_b);
 
       const reacao_a = calcReacaoA(
@@ -114,24 +112,20 @@ export default function Home() {
         reacao_b
       );
 
-      console.log({ reacao_a });
       setReactionA(reacao_a);
 
       const calcLimitEscBc = calcLmtEscArameBC(reacao_b, area_bc);
 
       setCalculatedLimitEscBc(calcLimitEscBc);
-      console.log({ calcLimitEscBc });
 
       const calcLimitEscDe = calcLmtEscArameDE(reacao_d, area_de);
 
       setCalculatedLimitEscDe(calcLimitEscDe);
-      console.log({ calcLimitEscDe });
 
       setStep((prev) => prev + 1);
     } else if (step === 2) {
       const calculateDeslocPtA = 0;
       setDisplacementPointA(calculateDeslocPtA);
-      console.log({ calculateDeslocPtA });
 
       const calculateDeslocPtC = calcDeslocPtC(
         reactionB,
@@ -140,7 +134,6 @@ export default function Home() {
         area_bc
       );
       setDisplacementPointc(calculateDeslocPtC);
-      console.log({ calculateDeslocPtC });
 
       const calculateDeslocPtE = calcDeslocPtE(
         reactionD,
@@ -149,7 +142,6 @@ export default function Home() {
         area_de
       );
       setDisplacementPointE(calculateDeslocPtE);
-      console.log({ calculateDeslocPtE });
 
       const calculateDeslocPtF = calcDeslocPtF(
         calculateDeslocPtC,
@@ -158,7 +150,6 @@ export default function Home() {
         dist_ef
       );
       setDisplacementPointF(calculateDeslocPtF);
-      console.log({ calculateDeslocPtF });
 
       if (lim_esc_bc < calculatedLimitEscBc)
         toast("O arame BC atingiu o limite de escoamento do material (aço)", {
@@ -176,11 +167,9 @@ export default function Home() {
     } else if (step === 3) {
       const deformBC = calcDeformArameBC(displacementPointc, comp_arame_bc);
       setDeformationBC(deformBC);
-      console.log({ deformBC });
 
       const deformDE = calcDeformArameDE(displacementPointE, comp_arame_de);
       setDeformationDE(deformDE);
-      console.log({ deformDE });
 
       setStep((prev) => prev + 1);
     } else if (step === 4) {

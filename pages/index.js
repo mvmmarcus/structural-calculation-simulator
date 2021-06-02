@@ -1,12 +1,8 @@
 import React from "react";
-import { useRouter } from "next/router";
+import Home from "../pages-render/home";
 
-const Home = () => {
-  const router = useRouter();
-
-  typeof window !== "undefined" && router.push("/home");
-
-  return <div />;
+const HomePage = () => {
+  return <Home />;
 };
 
-export default Home;
+export default HomePage;
