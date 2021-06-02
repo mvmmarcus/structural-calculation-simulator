@@ -1,16 +1,39 @@
 import { Grid } from "@material-ui/core";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 import { Input } from "../../components";
 
 export default function Step2({
-  formik,
-  handleChange,
-  values,
+  limEscBC,
+  limEscDE,
   calcLimitEscBC,
   calcLimitEscDE,
   reactionA,
   reactionB,
   reactionD,
 }) {
+  useEffect(() => {
+    if (limEscBC < calcLimitEscBC) {
+      toast(
+        "O arame BC atingiu o limite de escoamento do material. Volte uma etapa e redimensione o projeto!",
+        {
+          type: "error",
+          autoClose: false,
+        }
+      );
+    }
+
+    if (limEscDE < calcLimitEscDE) {
+      toast(
+        "O arame DE atingiu o limite de escoamento do material. Volte uma etapa e redimensione o projeto!",
+        {
+          type: "error",
+          autoClose: false,
+        }
+      );
+    }
+  }, []);
+
   return (
     <>
       <Grid style={{ textAlign: "center" }} item xs={12}>

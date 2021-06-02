@@ -22,7 +22,7 @@ export default function Step4({ deformBC, deformDE }) {
           allowNegative
           type="number"
           label="Deformação BC"
-          unit="m"
+          unit=""
           value={deformBC}
           disabled
           scale={6}
@@ -34,7 +34,7 @@ export default function Step4({ deformBC, deformDE }) {
           value={deformDE}
           type="number"
           label="Deformação DE"
-          unit="m"
+          unit=""
           disabled
           scale={6}
         />

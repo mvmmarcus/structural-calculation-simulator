@@ -1,13 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { Step1, Step2, Step3, Step4, Title } from "../../components";
 import { Container, FlexContainer } from "./styles";
-
-import { useFormik } from "formik";
-import { Button, Grid } from "@material-ui/core";
-import { ToastContainer, toast } from "react-toastify";
-import * as Yup from "yup";
 import {
   calcDeformArameBC,
   calcDeformArameDE,
@@ -20,8 +15,13 @@ import {
   calcReacaoB,
   calcReacaoD,
 } from "../../helpers";
-
 import "react-toastify/dist/ReactToastify.css";
+
+import { useFormik } from "formik";
+import { Button, Grid } from "@material-ui/core";
+import { ToastContainer } from "react-toastify";
+import * as Yup from "yup";
+import DownloadDocument from "../../components/PdfDocument";
 
 export default function Home() {
   const [values, setValues] = useState({
@@ -52,6 +52,25 @@ export default function Home() {
   const [displacementPointF, setDisplacementPointF] = useState(null);
   const [deformationBC, setDeformationBC] = useState(null);
   const [deformationDE, setDeformationDE] = useState(null);
+  const [disableButton, setDisableButton] = useState(false);
+
+  useEffect(() => {
+    if (step === 1) setDisableButton(false);
+  }, [step]);
+
+  const data = {
+    reactionA,
+    reactionB,
+    reactionD,
+    calculatedLimitEscBc,
+    calculatedLimitEscDe,
+    displacementPointA,
+    displacementPointc,
+    displacementPointE,
+    displacementPointF,
+    deformationBC,
+    deformationDE,
+  };
 
   const handleSubmit = (values) => {
     const {
@@ -69,7 +88,6 @@ export default function Home() {
       comp_arame_bc,
       comp_arame_de,
     } = values;
-    console.log({ values });
 
     if (step === 1) {
       const reacao_d = calcReacaoD(
@@ -122,6 +140,10 @@ export default function Home() {
 
       setCalculatedLimitEscDe(calcLimitEscDe);
 
+      if (lim_esc_bc < calcLimitEscBc || lim_esc_de < calcLimitEscDe) {
+        setDisableButton(true);
+      }
+
       setStep((prev) => prev + 1);
     } else if (step === 2) {
       const calculateDeslocPtA = 0;
@@ -151,19 +173,7 @@ export default function Home() {
       );
       setDisplacementPointF(calculateDeslocPtF);
 
-      if (lim_esc_bc < calculatedLimitEscBc)
-        toast("O arame BC atingiu o limite de escoamento do material (aço)", {
-          type: "error",
-          autoClose: false,
-        });
-      if (lim_esc_de < calculatedLimitEscDe)
-        toast("O arame DE atingiu o limite de escoamento do material (aço)", {
-          type: "error",
-          autoClose: false,
-        });
-      else {
-        setStep((prev) => prev + 1);
-      }
+      setStep((prev) => prev + 1);
     } else if (step === 3) {
       const deformBC = calcDeformArameBC(displacementPointc, comp_arame_bc);
       setDeformationBC(deformBC);
@@ -271,14 +281,13 @@ export default function Home() {
               )}
               {step === 2 && (
                 <Step2
+                  limEscBC={formik.values.lim_esc_bc}
+                  limEscDE={formik.values.lim_esc_de}
                   calcLimitEscBC={calculatedLimitEscBc}
                   calcLimitEscDE={calculatedLimitEscDe}
                   reactionA={reactionA}
                   reactionB={reactionB}
                   reactionD={reactionD}
-                  formik={formik}
-                  handleChange={handleChange}
-                  values={values}
                 />
               )}
               {step === 3 && (
@@ -308,6 +317,7 @@ export default function Home() {
               <Grid item xs={6}>
                 {step < 4 ? (
                   <Button
+                    disabled={disableButton}
                     onClick={formik.handleSubmit}
                     variant="outlined"
                     type="button"
@@ -315,12 +325,8 @@ export default function Home() {
                     Próximo
                   </Button>
                 ) : (
-                  <Button
-                    onClick={formik.handleSubmit}
-                    variant="outlined"
-                    type="button"
-                  >
-                    Finalizar
+                  <Button onClick={() => null} variant="outlined" type="button">
+                    <DownloadDocument data={data} />
                   </Button>
                 )}
               </Grid>
