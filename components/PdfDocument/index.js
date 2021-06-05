@@ -49,7 +49,7 @@ const MyDocument = ({ data }) => {
         </View>
         <View style={styles.section}></View>
         <View style={styles.section}>
-          <Text style={styles.text}>Limites de escoamento:</Text>
+          <Text style={styles.text}>Tensão nos arames:</Text>
           <Text style={styles.text}>Arame BC = {calculatedLimitEscBc} MPa</Text>
           <Text style={styles.text}>Arame DE = {calculatedLimitEscDe} MPa</Text>
         </View>

@@ -19,8 +19,8 @@ import { useWindowSize } from "../../hooks";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useFormik } from "formik";
-import { Button, Grid } from "@material-ui/core";
-import { ToastContainer } from "react-toastify";
+import { CircularProgress, Button, Grid } from "@material-ui/core";
+import { toast, ToastContainer } from "react-toastify";
 import * as Yup from "yup";
 import DownloadDocument from "../../components/PdfDocument";
 
@@ -41,6 +41,7 @@ export default function Home() {
     lim_esc_de: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [reactionA, setReactionA] = useState(null);
   const [reactionB, setReactionB] = useState(null);
@@ -91,6 +92,7 @@ export default function Home() {
     } = values;
 
     if (step === 1) {
+      setIsLoading(true);
       const reacao_d = calcReacaoD(
         peso,
         carga_distribuida,
@@ -145,7 +147,10 @@ export default function Home() {
         setDisableButton(true);
       }
 
-      setStep((prev) => prev + 1);
+      setTimeout(() => {
+        setIsLoading(false);
+        setStep((prev) => prev + 1);
+      }, 500);
     } else if (step === 2) {
       const calculateDeslocPtA = 0;
       setDisplacementPointA(calculateDeslocPtA);
@@ -240,7 +245,7 @@ export default function Home() {
 
   const stepTitles = {
     1: "Reações de apoio",
-    2: "Limites de escoamento",
+    2: "Tensões e reações",
     3: "Deslocamentos",
     4: "Deformações",
   };
@@ -248,7 +253,7 @@ export default function Home() {
   const size = useWindowSize();
 
   return (
-    <Container size={size}>
+    <Container size={size} isLoading={isLoading}>
       <ToastContainer />
       <Grid container spacing={10}>
         <Head>
@@ -297,6 +302,7 @@ export default function Home() {
             </Grid>
           )}
           <form>
+            {isLoading && <CircularProgress id="loading" />}
             <Grid className="input_group" container spacing={5}>
               {step === 1 && (
                 <Step1
@@ -314,6 +320,7 @@ export default function Home() {
                   reactionA={reactionA}
                   reactionB={reactionB}
                   reactionD={reactionD}
+                  disableButton={disableButton}
                 />
               )}
               {step === 3 && (
@@ -355,7 +362,12 @@ export default function Home() {
                 ) : (
                   <Button
                     fullWidth={size < 420 ? true : false}
-                    onClick={() => null}
+                    onClick={() =>
+                      toast("Relatório gerado com sucesso!", {
+                        type: "success",
+                        autoClose: true,
+                      })
+                    }
                     variant="outlined"
                     type="button"
                   >

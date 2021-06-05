@@ -1,14 +1,14 @@
 import styled, { css } from "styled-components";
 
 export const Container = styled.div`
-  ${({ size }) => css`
+  ${({ size, isLoading }) => css`
     width: 100%;
     height: 100%;
     padding: 40px;
     display: flex;
 
     #mobile-content {
-      padding: 32px 0 32px;
+      padding: 32px 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -16,7 +16,7 @@ export const Container = styled.div`
     }
 
     #content {
-      padding: ${size < 420 ? "24px" : "32px"};
+      padding: 32px 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -24,11 +24,32 @@ export const Container = styled.div`
     }
 
     form {
+      position: relative;
+
+      #loading {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        svg {
+          opacity: 1;
+        }
+      }
+
       .input_group {
-        margin-bottom: 20px;
+        width: 100%;
+        margin: 0 0 20px;
+
+        opacity: ${isLoading ? 0.5 : 1};
+
+        .MuiGrid-container {
+          width: 100%;
+          margin: 0;
+        }
       }
       .button_group {
         gap: ${size < 420 ? "20px" : ""};
+        padding: 0 20px;
 
         div {
           &:first-child {

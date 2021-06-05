@@ -58,7 +58,7 @@ export default function Input(props) {
         onChange={handleChange}
         value={value}
         variant={variant}
-        error={error === undefined ? false : true}
+        error={!!error}
         helperText={error}
         name={name}
         placeholder="0,00"
